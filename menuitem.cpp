@@ -24,8 +24,8 @@ hgeGUIMenuItem::hgeGUIMenuItem(int _id, hgeFont *_fnt, hgeSprite *_ospr, HEFFECT
 	delay=_delay;
 	title=_title;
 
-	color.SetHWColor(0xFFFFE060);
-	shadow.SetHWColor(0x30000000);
+	color.SetHWColor(0xEE99BBFF);
+	shadow.SetHWColor(0x33555577);
 	offset=0.0f;
 	timer=-1.0f;
 	timer2=-1.0f;
@@ -41,10 +41,10 @@ hgeGUIMenuItem::hgeGUIMenuItem(int _id, hgeFont *_fnt, hgeSprite *_ospr, HEFFECT
 // This method is called when the control should be rendered
 void hgeGUIMenuItem::Render()
 {
-	//fnt->SetColor(shadow.GetHWColor());
+	title->SetColor(shadow.GetHWColor());
 	title->Render(rect.x1+offset+3, rect.y1+3);
-	//fnt->SetColor(color.GetHWColor());
-	//fnt->Render(rect.x1-offset, rect.y1-offset, HGETEXT_LEFT, title);
+	title->SetColor(color.GetHWColor());
+	title->Render(rect.x1-offset, rect.y1-offset);
 	
 	if(id==gui->GetFocus())
     {
@@ -95,12 +95,12 @@ void hgeGUIMenuItem::Enter()
 {
 	hgeColor tcolor2;
 
-	scolor2.SetHWColor(0x00FFE060);
-	tcolor2.SetHWColor(0xFFFFE060);
+	scolor2.SetHWColor(0x0099BBFF);
+	tcolor2.SetHWColor(0xEE99BBFF);
 	dcolor2=tcolor2-scolor2;
 
 	sshadow.SetHWColor(0x00000000);
-	tcolor2.SetHWColor(0x20000000);
+	tcolor2.SetHWColor(0x33555577);
 	dshadow=tcolor2-sshadow;
 
 	timer2=0.0f;
@@ -112,11 +112,11 @@ void hgeGUIMenuItem::Leave()
 {
 	hgeColor tcolor2;
 
-	scolor2.SetHWColor(0xFFFFE060);
-	tcolor2.SetHWColor(0x00FFE060);
+	scolor2.SetHWColor(0xEE99BBFF);
+	tcolor2.SetHWColor(0x0099BBFF);
 	dcolor2=tcolor2-scolor2;
 
-	sshadow.SetHWColor(0x30000000);
+	sshadow.SetHWColor(0x33555577);
 	tcolor2.SetHWColor(0x00000000);
 	dshadow=tcolor2-sshadow;
 
@@ -140,17 +140,17 @@ void hgeGUIMenuItem::Focus(bool bFocused)
 	if(bFocused)
 	{        
 		hge->Effect_Play(snd);
-		scolor.SetHWColor(0xFFFFE060);
-		tcolor.SetHWColor(0xFFFFE060);
+		scolor.SetHWColor(0xEE99BBFF);
+		tcolor.SetHWColor(0xEEFFF022);
 		soffset=0;
-		doffset=0;
+		doffset=4;
 	}
 	else
 	{
-		scolor.SetHWColor(0xFFFFE060);
-		tcolor.SetHWColor(0xFFFFE060);
-		soffset=0;
-		doffset=0;
+		scolor.SetHWColor(0xEEFFF022);
+		tcolor.SetHWColor(0xEE99BBFF);
+		soffset=4;
+		doffset=-4;
 	}
 
 	dcolor=tcolor-scolor;

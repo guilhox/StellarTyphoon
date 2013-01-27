@@ -1,18 +1,18 @@
 HGE Started..
 
 HGE version: 1.80
-Date: 10.01.2013, 15:25:23
+Date: 14.12.2012, 01:54:47
 
 Application: JOGO
 OS: Windows 6.1.7601
-Memory: 4193592K total, 1808404K free
+Memory: 4158456K total, 2020216K free
 
-D3D Driver: aticfx32.dll
-Description: AMD Radeon HD 6700 Series
-Version: 8.17.10.1151
+D3D Driver: igdumdx32.dll
+Description: Intel(R) G45/G43 Express Chipset
+Version: 8.15.10.2302
 Mode: 800 x 600 x X8R8G8B8
 
-Sound Device: Alto-falantes (Dispositivo de High Definition Audio)
+Sound Device: Alto-falantes (Realtek High Definition Audio)
 Sample rate: 44100
 
 Init done.

@@ -1,13 +1,13 @@
-# Project: Jogo
+# Project: testehge
 # Makefile created by Dev-C++ 4.9.9.2
 
 CPP  = g++.exe
 CC   = gcc.exe
 WINDRES = windres.exe
 RES  = 
-OBJ  = teste1.o Shot.o menuitem.o Enemy.o ShotPattern.o Stage.o $(RES)
-LINKOBJ  = teste1.o Shot.o menuitem.o Enemy.o ShotPattern.o Stage.o $(RES)
-LIBS =  -L"C:/Dev-Cpp/lib" -L"D:/My Documents/UnB/POO-2012/hge181/lib/gcc" -mwindows ../hge181/lib/gcc/libhge.a ../hge181/lib/gcc/libhgehelp.a  
+OBJ  = main.o Shot.o Enemy.o ShotPattern.o Stage.o menuitem.o $(RES)
+LINKOBJ  = main.o Shot.o Enemy.o ShotPattern.o Stage.o menuitem.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -L"C:/Dev-Cpp/hge/hge181/lib/gcc" -mwindows lib/gcc/libhge.a lib/gcc/libhgehelp.a  
 INCS =  -I"C:/Dev-Cpp/include" 
 CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
 BIN  = "Stellar Typhoon.exe"
@@ -26,14 +26,11 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o "Stellar Typhoon.exe" $(LIBS)
 
-teste1.o: teste1.cpp
-	$(CPP) -c teste1.cpp -o teste1.o $(CXXFLAGS)
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
 Shot.o: Shot.cpp
 	$(CPP) -c Shot.cpp -o Shot.o $(CXXFLAGS)
-
-menuitem.o: menuitem.cpp
-	$(CPP) -c menuitem.cpp -o menuitem.o $(CXXFLAGS)
 
 Enemy.o: Enemy.cpp
 	$(CPP) -c Enemy.cpp -o Enemy.o $(CXXFLAGS)
@@ -43,3 +40,6 @@ ShotPattern.o: ShotPattern.cpp
 
 Stage.o: Stage.cpp
 	$(CPP) -c Stage.cpp -o Stage.o $(CXXFLAGS)
+
+menuitem.o: menuitem.cpp
+	$(CPP) -c menuitem.cpp -o menuitem.o $(CXXFLAGS)

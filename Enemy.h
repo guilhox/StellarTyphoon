@@ -47,15 +47,15 @@ class Boss: public Enemy
       public:
               Boss (hgeSprite *espr, int spawnTime, float ox, float oy, float fx, float fy, float speed, int health, int nPatterns);
               void update();
-              void setShotPattern(ShotPattern *pattern, float trigger, int index);
-              void setShotPattern(ShotPattern *pattern, int index);
+              void setShotPattern(BossPattern *pattern, float trigger, int index);
+              void setShotPattern(BossPattern *pattern, int index);
               //void setVariableShotPattern(hgeSprite *sspr, float n1, float n2, float sspeed, float dspeed, float theta, float dtheta, int type, float accel, float rotation, float alpha);
-              ShotPattern* getShotPattern(int index);
-              ShotPattern* getActivePattern();
+              BossPattern* getShotPattern(int index);
+              BossPattern* getActivePattern();
 
               
       private:
-              ShotPattern *pattern[20];
+              BossPattern *pattern[20];
               float triggerPattern[20];
               int activePattern;
               int nPatterns;

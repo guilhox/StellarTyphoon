@@ -182,7 +182,7 @@ Boss::Boss (hgeSprite *_espr, int _spawnTime, float _ox, float _oy, float _fx, f
      
      for(i=0; i<nPatterns; i++)
      {
-     triggerPattern[i] = health*(1-i/nPatterns);
+     triggerPattern[i] = health*(1-((float)i)/(float)nPatterns);
      }
      
      for(i=nPatterns; i<20; i++)
@@ -194,10 +194,15 @@ Boss::Boss (hgeSprite *_espr, int _spawnTime, float _ox, float _oy, float _fx, f
 
 void Boss::update()
 {
+     int i;
+     
      timer++;
      
      if(timer==spawnTime)
-     alive = true;                    
+     {
+     alive = true;           
+     existence = true;         
+     }                   
      
      //if(timer==spawnTime + duration)
      //alive = false;                    
@@ -216,37 +221,40 @@ void Boss::update()
              y+=speed*((fy-oy)/distance(ox, oy, fx, fy));
          }
          
-         if(health<=triggerPattern[activePattern])
+         if(health<triggerPattern[activePattern+1])
+         {
+         for(i=0;i<10000;i++)
+         pattern[activePattern]->getShot()[i]->hit();
          activePattern++;
-         
+         }
      }
 }
-void Boss::setShotPattern(ShotPattern *_pattern, float trigger, int index)
+void Boss::setShotPattern(BossPattern *_pattern, float trigger, int index)
 {
-     if(index>nPatterns) index = nPatterns;
+     if(index>nPatterns) index = nPatterns-1;
      if(index<0) index = 0;
      
      pattern[index] = _pattern;
      triggerPattern[index] = trigger;
 }
 
-void Boss::setShotPattern(ShotPattern *_pattern, int index)
+void Boss::setShotPattern(BossPattern *_pattern, int index)
 {
-     if(index>nPatterns) index = nPatterns;
+     if(index>nPatterns) index = nPatterns-1;
      if(index<0) index = 0;
      
      pattern[index] = _pattern;     
 }
 
-ShotPattern* Boss::getShotPattern(int index)
+BossPattern* Boss::getShotPattern(int index)
 {
-     if(index>nPatterns) index = nPatterns;
+     if(index>nPatterns) index = nPatterns-1;
      if(index<0) index = 0;
      
      return pattern[index];             
 }
 
-ShotPattern* Boss::getActivePattern()
+BossPattern* Boss::getActivePattern()
 {
      return pattern[activePattern];             
 }

@@ -4,7 +4,8 @@ class Stage{
       private:
               Enemy *inimigos[100];
               Boss *chefe;
-              ShotPattern *padroes[120];
+              ShotPattern *padroes[100];
+              BossPattern *bpadroes[20];
               int timer;
               int stageNumber;
               float aimShot(float x1, float y1, float x2, float y2);
