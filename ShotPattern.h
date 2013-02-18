@@ -4,32 +4,28 @@ class ShotPattern
 {
       public:
              ShotPattern(hgeSprite *pspr, float radius);
-             virtual void update(bool alive);
-             virtual void update(bool alive, int wave);
-             virtual void setup(float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, int type, bool aimed, int wave);
+             void updatePattern(float theta);
+             void updateShots();
              void shift(int timer, float speed, float theta, float accel, float rotation, float alpha, int div, int absSpeed, int absTheta, int absRot, int absAccel, int absAlpha, int index, bool single);
-             virtual variableShot** getShot();
+             virtual Shot** getShot();
              void moveOrigin(float ox, float oy);
              int getWaveSize();
+             int getCurrentIndex();
              bool isAimed();
              virtual void aim(float theta);
+             void reset();
       
-      private:
-              variableShot *shot[1000];
-              float thetaorig[1000];
-              float speedorig[1000];
-              float accelorig[1000];
-              float rotorig[1000];
-              float alphaorig[1000];
-              
-      protected:         
+      protected:
+              static Shot *shot[20000];
+              static int currentIndex; 
+              Shot *pattern[20000];
               int timer;
               int shiftTimer[10];
               int div[10];
               int interval;
-              int type;
               int activeIndex;
               int waveSize;
+              int patternSize;
               float ox;
               float oy;
               float shiftSpeed[10];
@@ -47,21 +43,50 @@ class ShotPattern
       
 };
 
-class BossPattern:public ShotPattern
+class SimpleRadialPattern: public ShotPattern
 {
       public:
-             BossPattern(hgeSprite *pspr, float radius);
-             void update(bool alive);
-             void update(bool alive, int wave);
-             void setup(float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, int type, bool aimed, int wave);
-             variableShot** getShot();
-             void aim(float theta);
-      
-      private:
-              variableShot *bshot[10000];
-              float bthetaorig[10000];      
-              float bspeedorig[10000];
-              float baccelorig[10000];
-              float brotorig[10000];
-              float balphaorig[10000];
+      SimpleRadialPattern(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class DoubleRadialPattern: public ShotPattern
+{
+      public:
+      DoubleRadialPattern(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class RandomPattern: public ShotPattern
+{
+      public:
+      RandomPattern(hgeSprite *pspr, float radius, float minspeed, float maxspeed, int interval, int wave);
+};
+
+class CentralBurstPattern: public ShotPattern
+{
+      public:
+      CentralBurstPattern(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class RandomBurstPattern: public ShotPattern
+{
+      public:
+      RandomBurstPattern(hgeSprite *pspr, float radius, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class CustomRadialPattern1: public ShotPattern
+{
+      public:
+      CustomRadialPattern1(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class CustomRadialPattern2: public ShotPattern
+{
+      public:
+      CustomRadialPattern2(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
+};
+
+class CustomRadialPattern3: public ShotPattern
+{
+      public:
+      CustomRadialPattern3(hgeSprite *pspr, float radius, float n1, float n2, float minspeed, float maxspeed, float theta, float dtheta, int interval, bool aimed, int wave);
 };

@@ -14,6 +14,7 @@
 
 
 #include "hge.h"
+#include "iostream.h"
 #include "hgefont.h"
 #include "hgegui.h"
 #include "hgeparticle.h"
@@ -44,7 +45,7 @@ hgeSprite           *title, *play, *options, *highscores, *credits, *quit, *game
 hgeSprite*			spt, *sprites[221];
 hgeParticleSystem*	par;
 
-variableShot *tiro[300], *tiro2[300], *btiro[2000];
+Shot *tiro[300], *tiro2[300], *btiro[2000];
 
 Stage *FASE;
 
@@ -99,7 +100,7 @@ bool FrameFunc()
          
          if(espn<3) espn++;
          else espn = 0;
-         
+         //system("pause");
          FASE->update(ox, oy);
                           
            ospr->SetTextureRect(46, 0, 44, 32, false);//Reseta o sprite do player para a posição original
@@ -207,7 +208,7 @@ bool FrameFunc()
             {
             FASE->getEnemy(j)->damage(btiro[i]->getPower());
             if(FASE->getEnemy(j)->getHealth()<=0) FASE->getEnemy(j)->die();
-            espr->SetColor(0xFFFFFFFF);//Inimigos brilham quando são acertados
+            FASE->getEnemy(j)->getSprite()->SetColor(0xFFFFFFFF);//Inimigos brilham quando são acertados
             btiro[i]->hit();//Desativa o tiro que acertou
             }
         }
@@ -215,7 +216,7 @@ bool FrameFunc()
         if(distance(FASE->getBoss()->getX(), FASE->getBoss()->getY(), btiro[i]->getX(), btiro[i]->getY())<40&&btiro[i]->isActive()&&FASE->getBoss()->isAlive())
             {
             FASE->getBoss()->damage(1);//Dano mínimo
-            
+            FASE->getBoss()->getSprite()->SetColor(0xFFFFFFFF);
             if(FASE->getBoss()->getHealth()<=0) FASE->getBoss()->die();
             btiro[i]->hit();
             }
@@ -260,22 +261,25 @@ bool FrameFunc()
             FASE->getBoss()->damage(tiro[i]->getPower());
             
             if(FASE->getBoss()->getHealth()<=0) FASE->getBoss()->die();
+            FASE->getBoss()->getSprite()->SetColor(0xFFFFFFFF);
             tiro[i]->hit();
             }else if (distance(FASE->getBoss()->getX(), FASE->getBoss()->getY(), tiro2[i]->getX(), tiro2[i]->getY())<20&&tiro2[i]->isActive()&&FASE->getBoss()->isAlive())
             {
             FASE->getBoss()->damage(tiro2[i]->getPower());
             if(FASE->getBoss()->getHealth()<=0) FASE->getBoss()->die();
+            FASE->getBoss()->getSprite()->SetColor(0xFFFFFFFF);
             tiro2[i]->hit();
             }
         
         }
         
-        for(i=0; i<100; i++){
-                 if(FASE->getEnemy(i)->exists())
-                for(j=0; j<1000; j++){        
-                    if(g&&bombcont==0&&distance(ox, oy, FASE->getEnemy(i)->getShotPattern()->getShot()[j]->getX(), FASE->getEnemy(i)->getShotPattern()->getShot()[j]->getY())<4&&deathcont==0&&FASE->getEnemy(i)->getShotPattern()->getShot()[j]->isActive())
+        
+
+                for(j=0; j<20000; j++){        
+                    if(g&&bombcont==0&&distance(ox, oy, FASE->getEnemy(0)->getShotPattern()->getShot()[j]->getX(), FASE->getEnemy(0)->getShotPattern()->getShot()[j]->getY())<FASE->getEnemy(0)->getShotPattern()->getShot()[j]->getRadius()&&deathcont==0&&FASE->getEnemy(0)->getShotPattern()->getShot()[j]->isActive())
                     {//Testa se o player foi acertado por um tiro inimigo
                     lives--;
+                    
                     if(lives==0)//Game Over
                     	{
                             //g = false; gui->SetFocus(1); gui->Enter();
@@ -290,6 +294,7 @@ bool FrameFunc()
                              tiro2[i]->hit();//Desativa todos os tiros teleguiados
                              }
                             FASE = new Stage(1, sprites);
+                            
                             return false;
                         }
                     else{
@@ -299,46 +304,10 @@ bool FrameFunc()
                     ox = 100;//Retorna o player para posição inicial
                     oy = 300;
                     
-                    FASE->getEnemy(i)->getShotPattern()->getShot()[j]->hit();//Desativa tiro inimigo que acertou
+                    FASE->getEnemy(0)->getShotPattern()->getShot()[j]->hit();//Desativa tiro inimigo que acertou
                     }
                 }
         
-        }
-        
-        if(FASE->getBoss()->exists())
-        for(j=0; j<10000; j++){    
-        if(g&&bombcont==0&&distance(ox, oy, FASE->getBoss()->getActivePattern()->getShot()[j]->getX(), FASE->getBoss()->getActivePattern()->getShot()[j]->getY())<4&&deathcont==0&&FASE->getBoss()->getActivePattern()->getShot()[j]->isActive())
-            {//Mesmos testes de antes, agora com os tiros do chefe
-            lives--;
-            if(lives==0)
-                    	{
-                            //g = false; gui->SetFocus(1); gui->Enter();
-                            g = false; d = true; dead->SetFocus(1); dead->Enter();
-                            lives = 5;
-                            bombs = 5;
-                            ox = 100;//Retorna o player para posição inicial
-                            oy = 300;
-
-                          for(i=0; i<300; i++)
-                          {
-                          tiro[i]->hit();//Desativa todos os tiros normais
-                          tiro2[i]->hit();//Desativa todos os tiros teleguiados
-                          }
-                            FASE = new Stage(1, sprites);
-                            return false;
-                        }
-            else{
-            deathcont=120;
-            ospr->SetColor(0x66FFFFFF);
-            }
-            ox = 100;
-            oy = 300;
-            
-            ospr->SetColor(0x66FFFFFF);
-            
-            FASE->getBoss()->getActivePattern()->getShot()[j]->hit();
-            }
-            }
             
             if(bombcont>1&&bcont==0)//Performa as operações com os tiros da bomba, se a bomba for ativada
             {
@@ -485,9 +454,9 @@ bool RenderFunc()
 	ospr->Render(ox, oy);
 	//sspr->Render(ox, oy);
 	
-	
 	for(i=0; i<300; i++)
 		{
+             
              if(tiro[i]->isActive()){
              sspr->RenderStretch(tiro[i]->getX()-12, tiro[i]->getY()-12, tiro[i]->getX()+12, tiro[i]->getY()+12);   
              }
@@ -508,14 +477,12 @@ bool RenderFunc()
              bspr->RenderStretch(700+20*i-8, 37, 700+20*i+8, 53);
         
         for(j=0; j<100; j++){
-                 
-            e = true;
-                 
         	if (FASE->getEnemy(j)->isAlive()) FASE->getEnemy(j)->getSprite()->Render(FASE->getEnemy(j)->getX(), FASE->getEnemy(j)->getY());
-        	else e = false;
-        	
-        	if (FASE->getEnemy(j)->exists())
-            for(i=0; i<1000; i++)
+         }
+         
+         if (FASE->getBoss()->isAlive()) FASE->getBoss()->getSprite()->Render(FASE->getBoss()->getX(), FASE->getBoss()->getY());
+         
+            for(i=0; i<20000; i++)
         		{
                      if(i%4==0)
                      sspr2->SetColor(0xFFAAFFAA);
@@ -526,42 +493,12 @@ bool RenderFunc()
                      else
                      sspr2->SetColor(0xFFAAAAFF);
                      
-                     if(FASE->getEnemy(j)->getShotPattern()->getShot()[i]->isActive()){
-                     sspr2->Render(FASE->getEnemy(j)->getShotPattern()->getShot()[i]->getX(), FASE->getEnemy(j)->getShotPattern()->getShot()[i]->getY()); 
-                     e = true;
+                     if(FASE->getEnemy(0)->getShotPattern()->getShot()[i]->isActive()){
+                     sspr2->Render(FASE->getEnemy(0)->getShotPattern()->getShot()[i]->getX(), FASE->getEnemy(0)->getShotPattern()->getShot()[i]->getY()); 
                      }  
                      
-                }
-        FASE->getEnemy(j)->setExist(e);        
-        }
-        
-        
-        
-        e = true;
-        
-        if (FASE->getBoss()->isAlive()) FASE->getBoss()->getSprite()->Render(FASE->getBoss()->getX(), FASE->getBoss()->getY());
-        else e = false;
-        
-        if (FASE->getBoss()->exists())
-            for(i=0; i<10000; i++)
-        		{
-                     if(i%4==0)
-                     sspr2->SetColor(0xFFAAFFAA);
-                     else if(i%3==0)
-                     sspr2->SetColor(0xFFFFAAFF);
-                     else if(i%2==0)
-                     sspr2->SetColor(0xFFFFAAAA);
-                     else
-                     sspr2->SetColor(0xFFAAAAFF);
-                     
-                     if(FASE->getBoss()->getActivePattern()->getShot()[i]->isActive())
-                     {
-                     sspr2->Render(FASE->getBoss()->getActivePattern()->getShot()[i]->getX(), FASE->getBoss()->getActivePattern()->getShot()[i]->getY());   
-                     e = true;
-                     }
-                }
-              
-                FASE->getBoss()->setExist(e);
+                }  
+
                 
                 if (p){
                 //hge->Gfx_RenderQuad(&quadpreto);
@@ -583,7 +520,7 @@ bool RenderFunc()
     }
 
 	fnt->SetColor(0xFFFFFFFF);
-	fnt->printf(5, 5, HGETEXT_LEFT, "dt:%.3f\nFPS:%d\n", hge->Timer_GetDelta(), hge->Timer_GetFPS());
+	fnt->printf(5, 5, HGETEXT_LEFT, "dt:%.3f\nFPS:%d", hge->Timer_GetDelta(), hge->Timer_GetFPS());
 	hge->Gfx_EndScene();
 
 	return false;
@@ -678,27 +615,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		for (i=0; i<221; i++)
 		{
            if(i<100)
-           sprites[i] = espr;     
+           sprites[i] = new  hgeSprite(ntex, 180, 0, 40, 20);     
            else if(i==100)
            {
            sprites[i] = new  hgeSprite(ntex, 0, 310, 74, 74) ;
            sprites[i]->SetColor(0xFFBBBBBB);
 	       sprites[i]->SetHotSpot(37,37); 
            }
-           else sprites[i] = sspr2; 
+           else sprites[i] = new  hgeSprite(otex, 64, 96, 32, 32); 
         }
-		
 		FASE = new Stage(1, sprites);
-		
 		for(i=0; i<300; i++)
 		{
-                 tiro[i] = new variableShot (sspr, 12);
-                 tiro2[i] = new variableShot (aspr, 12);
+                 tiro[i] = new Shot (sspr, 12);
+                 tiro2[i] = new Shot (aspr, 12);
         }
         
         for(i=0; i<2000; i++)
 		{
-                 btiro[i] = new variableShot (bspr, 15);
+                 btiro[i] = new Shot (bspr, 15);
         }
         
 

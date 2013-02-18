@@ -5,8 +5,8 @@
 class Enemy
 {
       public:
-              Enemy (hgeSprite *espr, int spawnTime, float ox, float oy, float fx, float fy, float speed, int health);
-              virtual void update();
+              Enemy (hgeSprite *espr, int spawnTime, int warmUpTime, float ox, float oy, float fx, float fy, float speed, int health);
+              virtual void update(float theta);
              // virtual void spawn(float sx, float sy, int health);
               virtual void moveTo(float fx, float fy, float speed);
               virtual void setShotPattern(ShotPattern *pattern);
@@ -18,8 +18,6 @@ class Enemy
               float getX();
               float getY();
               bool isAlive();
-              bool exists();
-              void setExist(bool e);
               int getHealth();
               virtual void die();
               
@@ -30,6 +28,7 @@ class Enemy
               int health;
               int timer;
               int spawnTime;
+              int warmUpTime;
               int duration;
               float speed;
               float ox;
@@ -39,23 +38,22 @@ class Enemy
               float fx;
               float fy;
               bool alive;
-              bool existence;
 };
 
 class Boss: public Enemy
 {
       public:
-              Boss (hgeSprite *espr, int spawnTime, float ox, float oy, float fx, float fy, float speed, int health, int nPatterns);
-              void update();
-              void setShotPattern(BossPattern *pattern, float trigger, int index);
-              void setShotPattern(BossPattern *pattern, int index);
+              Boss (hgeSprite *espr, int spawnTime, int warmUpTime, float ox, float oy, float fx, float fy, float speed, int health, int nPatterns);
+              void update(float theta);
+              void setShotPattern(ShotPattern *pattern, float trigger, int index);
+              void setShotPattern(ShotPattern *pattern, int index);
               //void setVariableShotPattern(hgeSprite *sspr, float n1, float n2, float sspeed, float dspeed, float theta, float dtheta, int type, float accel, float rotation, float alpha);
-              BossPattern* getShotPattern(int index);
-              BossPattern* getActivePattern();
+              ShotPattern* getShotPattern(int index);
+              ShotPattern* getActivePattern();
 
               
       private:
-              BossPattern *pattern[20];
+              ShotPattern *pattern[20];
               float triggerPattern[20];
               int activePattern;
               int nPatterns;

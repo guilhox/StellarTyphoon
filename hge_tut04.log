@@ -1,11 +1,11 @@
 HGE Started..
 
 HGE version: 1.80
-Date: 17.02.2013, 20:12:39
+Date: 10.11.2012, 01:10:02
 
-Application: Stellar Typhoon
+Application: HGE Tutorial 04 - Using render targets
 OS: Windows 6.1.7601
-Memory: 4158456K total, 2121264K free
+Memory: 4158456K total, 2250508K free
 
 D3D Driver: igdumdx32.dll
 Description: Intel(R) G45/G43 Express Chipset
@@ -17,3 +17,6 @@ Sample rate: 44100
 
 Init done.
 
+
+Finishing..
+The End.
